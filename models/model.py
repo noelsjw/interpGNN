@@ -35,7 +35,6 @@ class GCN_GW(nn.Module):
         self.memory_layer1 = TransformerEncoderLayerVanilla(args)
         self.layer_norm = torch.nn.LayerNorm(n_units)        
         self.shared_memory_attention = args.shared_memory_attention
-        self.shared_memory_percentage = args.shared_memory_percentage
         self.use_topk = args.use_topk
         self.topk = args.topk
         self.gw_ratio = args.gw_ratio
@@ -50,14 +49,12 @@ class GCN_GW(nn.Module):
         x = x.relu() 
         x = F.dropout(x, p=0.2, training=self.training)
         x_gw = x.unsqueeze(1)
-        memory_size = int(self.shared_memory_percentage * x_gw.size(2))
-        memory = torch.randn(memory_size, 1, x_gw.size(2)).to(x.device)
         if self.memory_layer1.self_attn.memory is not None:
             # self.memory_layer.self_attn.init_memory(x_gw.size(1), device=x.device)
             self.memory_layer1.self_attn.memory = self.memory_layer1.self_attn.memory.detach()
         if self.init_memory:
             self.memory_layer1.self_attn.init_memory(x_gw.size(1), device=x.device)
-        x_gw, memory = self.memory_layer1(x_gw, None, memory=memory, plot=plot)
+        x_gw, memory = self.memory_layer1(x_gw, None, memory=self.memory_layer1.self_attn.memory, plot=plot)
         x_gw = x_gw.squeeze(1)
         x = self.layer_norm(x)
         x = torch.add(self.gw_ratio*x_gw, x)
