@@ -186,7 +186,7 @@ data.edge_index = add_self_loops(data.edge_index)[0]
 
 
 
-best_test_acc, tpr, fpr = train_model(modelclass, 
+final_test_acc, tpr, fpr = train_model(modelclass, 
                                     args.num_layers,
                                     data.train_mask, 
                                     data.val_mask, 
@@ -207,5 +207,5 @@ best_test_acc, tpr, fpr = train_model(modelclass,
 
 
 logger.info("overall accuraccy: ")
-logger.info(best_test_acc)
+logger.info(final_test_acc)
 

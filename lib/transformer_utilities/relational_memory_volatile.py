@@ -51,7 +51,8 @@ class RelationalMemory(nn.Module):
         self.mem_slots = mem_slots
         self.head_size = head_size
         self.num_heads = num_heads
-        self.mem_size = self.head_size * self.num_heads
+        self.mem_size = self.head_size * self.num_heads 
+        print(self.mem_size)
         self.use_topk = use_topk
         self.topk = topk
 
@@ -271,8 +272,6 @@ class RelationalMemory(nn.Module):
             Returns:
               The attended-over memory.
         """
-        if plot is not None:
-            plot = "Attend_M"
         for _ in range(self.num_blocks):
             attended_memory = self.multihead_attention(inputs, memory, plot=plot)
 

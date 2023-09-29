@@ -30,7 +30,7 @@ def init_seed(seed):
 
 
 def generate_mask_random(
-    node_importance, 
+    n, 
     train_num=500,
     valid_num=500,
     test_num=1000):
@@ -48,16 +48,15 @@ def generate_mask_random(
         _type_: _description_
     """
 
-    n = len(node_importance)
     perm = torch.as_tensor(np.random.permutation(n))
 
     train_idx = perm[:train_num]
     valid_idx = perm[train_num:train_num + valid_num]
     test_idx = perm[train_num + valid_num:]
     
-    train_mask = torch.zeros(len(node_importance))
-    valid_mask = torch.zeros(len(node_importance))
-    test_mask = torch.zeros(len(node_importance))
+    train_mask = torch.zeros(n)
+    valid_mask = torch.zeros(n)
+    test_mask = torch.zeros(n)
     train_mask[train_idx] = 1
     valid_mask[valid_idx] = 1
     test_mask[test_idx] = 1

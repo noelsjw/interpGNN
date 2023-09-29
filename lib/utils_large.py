@@ -74,6 +74,7 @@ def train_model(model_class,
     best_valid_acc = 0
     best_test_acc = 0
     best_epoch = 0
+    test_acc = 0
     tpr = []
     fpr = []
     model = model_class(n_nodes=data.num_nodes,
@@ -141,7 +142,7 @@ def train_model(model_class,
     logger.info('best epoch: {}'.format(best_epoch))
     logger.info(tpr)
     logger.info(fpr)
-    return best_test_acc, tpr, fpr
+    return test_acc.item(), tpr, fpr
 
 
 @torch.no_grad()
