@@ -19,7 +19,9 @@ dgl == 0.7.1
 We have uploaded all pre-trained positional embeddings in the `dataset/'name_of_dataset/node2vec'` folder except for Amazon, 128-dim PE for Aminer-CS, and 128-dim PE for Reddit (due to exceeding the size limit of GitHub). However, you may pretrain the positional embeddings yourself with different hyper-parameters by modifying the configuration in pos_emb.conf. Please place the generated .pt file in above folder. 
 
 Optionally, run: 
+```bash
 python generae_pos_emb.py
+```
 
 
 ## Train the InterpGNN
