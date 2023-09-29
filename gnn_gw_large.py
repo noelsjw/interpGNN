@@ -78,7 +78,6 @@ args.add_argument('--node2vec_emb_dim', default=config['model']['emb_dim'], type
 args.add_argument('--gw_ratio', default=config['model']['gw_ratio'], type=float)
 args.add_argument('--init_memory', default=config['model']['init_memory'], type=eval)
 args.add_argument('--shared_memory_attention', default=config['model']['shared_memory_attention'], type=eval)
-args.add_argument('--shared_memory_percentage', default=config['model']['shared_memory_percentage'], type=float)
 args.add_argument('--mem_slots', default=config['model']['mem_slots'], type=int)
 args.add_argument('--encoder_attention_heads', default=config['model']['encoder_attention_heads'], type=int)
 args.add_argument('--encoder_embed_dim', default=config['model']['encoder_embed_dim'], type=int)
@@ -163,9 +162,9 @@ pe_path = os.path.join('dataset', args.dataset, 'node2vec', str(args.node2vec_em
 pe = torch.load(pe_path)
 data.pe = pe
 
-importance_list = list(range(node_num))
+
 train_mask, valid_mask, test_mask = generate_mask_random(
-    importance_list.copy(),
+    node_num,
     train_num=int (args.train_ratio * node_num),
     valid_num=int(args.valid_ratio * node_num),
     test_num=int (args.test_ratio * node_num)
@@ -192,7 +191,6 @@ best_test_acc, tpr, fpr = train_model(modelclass,
                                     data.train_mask, 
                                     data.val_mask, 
                                     data.test_mask, 
-                                    # graph_with_features,
                                     data,  
                                     node_features,
                                     node_labels,
@@ -210,6 +208,4 @@ best_test_acc, tpr, fpr = train_model(modelclass,
 
 logger.info("overall accuraccy: ")
 logger.info(best_test_acc)
-# logger.info("struc_closeness: ")
-# logger.info(struc_closeness)
 
